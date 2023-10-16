@@ -1,0 +1,19 @@
+version: '3.6'
+services:
+  wyoming-whisper:
+    container_name: wyoming-whisper
+    image: wyoming-whisper
+    build: .
+    ports:
+      - "10300:10300"
+    volumes:
+      - ./data:/data
+    restart: always
+    command: --model medium-int8 --language en
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

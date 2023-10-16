@@ -1,4 +1,5 @@
-FROM debian:bullseye-slim
+# HOWTO: docker run -it --rm --gpus '"device=0"' .
+FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu20.04
 
 # Install Whisper
 WORKDIR /usr/src
@@ -26,6 +27,7 @@ RUN \
 WORKDIR /
 COPY run.sh ./
 
+ENV LD_LIBRARY_PATH /usr/lib/x86_64-linux-gnu
 EXPOSE 10300
 
 ENTRYPOINT ["bash", "/run.sh"]

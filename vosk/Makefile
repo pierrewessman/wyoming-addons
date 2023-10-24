@@ -1,10 +1,11 @@
 .PHONY: local run update
 
-VERSION := 1.0.1
-TAG := rhasspy/wyoming-porcupine1
+VERSION := 1.0.0
+TAG := rhasspy/wyoming-vosk
 PLATFORMS := linux/amd64,linux/arm64,linux/arm/v7
 HOST := 0.0.0.0
-PORT := 10400
+PORT := 10300
+DATA_DIR := $(PWD)/local
 
 all:
 	docker buildx build . --platform "$(PLATFORMS)" --tag "$(TAG):$(VERSION)" --push
@@ -16,4 +17,4 @@ local:
 	docker build . -t "$(TAG):$(VERSION)" --build-arg TARGETARCH=amd64
 
 run:
-	docker run -it -p '$(PORT):$(PORT)' "$(TAG):$(VERSION)" --uri 'tcp://$(HOST):$(PORT)' --debug
+	docker run -it -p "$(PORT):$(PORT)" -v "$(DATA_DIR):$(DATA_DIR)" "$(TAG):$(VERSION)" --uri 'tcp://$(HOST):$(PORT)' --data-dir "$(DATA_DIR)" --debug

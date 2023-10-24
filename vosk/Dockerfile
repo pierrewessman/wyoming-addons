@@ -2,9 +2,9 @@ FROM debian:bookworm-slim
 ARG TARGETARCH
 ARG TARGETVARIANT
 
-# Install porcupine1
+# Install wyoming-vosk
 WORKDIR /usr/src
-ENV WYOMING_PORCUPINE1_VERSION=1.0.1
+ENV WYOMING_VOSK_VERSION=1.0.0
 ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 RUN \
@@ -12,19 +12,18 @@ RUN \
     && apt-get install -y --no-install-recommends \
         python3 \
         python3-pip \
-    \
     && pip3 install --no-cache-dir -U \
         setuptools \
         wheel \
     && pip3 install --no-cache-dir \
         --extra-index-url https://www.piwheels.org/simple \
-        "wyoming-porcupine1==${WYOMING_PORCUPINE1_VERSION}" \
-    \
+        -f . \
+        "wyoming-vosk[limited] @ https://github.com/rhasspy/wyoming-vosk/archive/refs/tags/v${WYOMING_VOSK_VERSION}.tar.gz" \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /
 COPY run.sh ./
 
-EXPOSE 10400
+EXPOSE 10300
 
 ENTRYPOINT ["bash", "/run.sh"]

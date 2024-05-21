@@ -4,7 +4,7 @@ ARG TARGETVARIANT
 
 # Install wyoming-vosk
 WORKDIR /usr/src
-ENV WYOMING_VOSK_VERSION=1.3.1
+ENV WYOMING_VOSK_VERSION=1.5.0
 ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 RUN \
@@ -12,6 +12,7 @@ RUN \
     && apt-get install -y --no-install-recommends \
         python3 \
         python3-pip \
+        libatomic1 \
     && pip3 install --no-cache-dir -U \
         setuptools \
         wheel \
